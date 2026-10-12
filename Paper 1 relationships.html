@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper 1: Theme 1 — Issues of Relationships</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --card-border: #94a3b8;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-primary: #0369a1;
+            --accent-header: #075985;
+            --hover-bg: #f1f5f9;
+            --line-color: #0369a1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Century Gothic", "CenturyGothic", "AppleGothic", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: auto;
+            font-size: 1.02rem;
+            line-height: 1.5;
+        }
+
+        header {
+            padding: 1.5rem 1rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid #cbd5e1;
+            background: #ffffff;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--accent-header);
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+        }
+
+        .mindmap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .root-node {
+            background-color: var(--accent-header);
+            color: #ffffff;
+            padding: 1.2rem 3rem;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.4rem;
+            box-shadow: 0 10px 15px -3px rgba(3, 105, 161, 0.2);
+            z-index: 2;
+            text-align: center;
+            margin-bottom: 4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .branches-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            width: 100%;
+            max-width: 1600px;
+            position: relative;
+        }
+
+        .branches-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            width: 3px;
+            height: 40px;
+            background-color: var(--line-color);
+            transform: translateX(-50%);
+        }
+
+        .branch-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        .branch-group-header {
+            background-color: #e0f2fe;
+            border: 2px solid var(--accent-primary);
+            color: var(--accent-header);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .node-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-left: 5px solid var(--accent-primary);
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .node-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -3px rgba(3, 105, 161, 0.15);
+        }
+
+        .node-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .node-header h3 {
+            font-size: 1.15rem;
+            color: var(--accent-header);
+            font-weight: 700;
+        }
+
+        .sub-nodes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .sub-node {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-left: 3px solid var(--accent-primary);
+            border-radius: 0 6px 6px 0;
+            padding: 0.75rem;
+            font-size: 0.98rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .sub-node:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .sub-node h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .sub-node h4::after {
+            content: '+';
+            color: var(--accent-primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .sub-node.active h4::after {
+            content: '-';
+        }
+
+        .sub-content {
+            display: none;
+            margin-top: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.5;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 0.5rem;
+        }
+
+        .sub-node.active .sub-content {
+            display: block;
+        }
+
+        .sub-content p {
+            margin-bottom: 0.5rem;
+        }
+
+        .quotation {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-left: 3px solid var(--accent-primary);
+            padding: 0.6rem 0.8rem;
+            margin: 0.6rem 0;
+            font-size: 0.95rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .quotation .ref {
+            font-weight: bold;
+            color: var(--accent-header);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #cbd5e1;
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 0.45rem 0.6rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            font-weight: bold;
+            background-color: #f1f5f9;
+            color: var(--accent-header);
+        }
+
+        @media (max-width: 1024px) {
+            .branches-wrapper {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .branches-wrapper::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Paper 1</h1>
+    </header>
+
+    <div class="container">
+        <div class="mindmap">
+            <div class="root-node">Theme 1: Issues of relationships</div>
+
+            <div class="branches-wrapper">
+
+                <!-- LEFT: CHRISTIANITY -->
+                <div class="branch-column">
+                    <div class="branch-group-header">Christianity</div>
+
+                    <!-- Relationships and marriage -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Relationships and marriage</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Families, roles, cohabitation</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Question</th><th>Conservative view</th><th>Liberal view</th></tr>
+                                        <tr><td>What is the family for?</td><td>The family is the building block of society: children are brought up in the faith and elderly relatives are cared for. Most Christians agree.</td><td>The same, but families come in many forms (single parents, blended families) and all deserve respect. Many liberal Christians emphasise this.</td></tr>
+                                        <tr><td>Who leads the home?</td><td>The husband should lead the family. Some Catholics and many evangelicals hold this.</td><td>Men and women are equal partners. Most Christians in Britain today take this view.</td></tr>
+                                        <tr><td>Can a Christian marry a non-Christian?</td><td>It weakens the family's faith, so it is discouraged. Some conservative Christians say this.</td><td>Love and commitment matter more than matching religions. Many liberal Christians accept it.</td></tr>
+                                        <tr><td>Is cohabitation acceptable?</td><td>No. Sex belongs inside marriage, so couples should wait. The Catholic Church teaches this, and many evangelicals agree.</td><td>Yes, as a step towards marriage or a real commitment in its own right. Many Anglicans and most liberal Protestants accept it.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>What marriage is</h4>
+                                <div class="sub-content">
+                                    <p><strong>Catholics:</strong> marriage is a sacrament, a channel of God's grace which can never be undone. <strong>Most Protestants:</strong> a covenant, a serious two-way promise made in front of God, intended to last for life, but one which humans can sadly break.</p>
+                                    <div class="quotation"><span class="ref">Mark 10:6-8</span>"But at the beginning of creation God 'made them male and female.' For this reason a man will leave his father and mother and be united to his wife, and the two will become one flesh.' So they are no longer two, but one flesh."</div>
+                                    <p>Conservatives: marriage is God's design, one man and one woman for life. Liberals: Jesus was answering a question about divorce, not defining who may marry today.</p>
+                                    <p>In a British church wedding the couple make vows ("for better, for worse... till death us do part"), exchange rings as a sign of the covenant, and receive a blessing. The Church of England Synod (the Church's parliament, where bishops and representatives debate and vote on teaching) decides Anglican teaching on marriage.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Adultery</h4>
+                                <div class="sub-content">
+                                    <p>The Ten Commandments forbid adultery ("You shall not commit adultery"). Almost all Christians condemn adultery in every circumstance: it breaks the marriage vow of faithfulness and the one-flesh union described in Mark 10. Churches that accept divorce usually name adultery as the main ground for it, following Matthew 19:9.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Divorce, annulment, separation and re-marriage</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Church</th><th>Divorce?</th><th>Re-marriage?</th></tr>
+                                        <tr><td>Catholic (about 1 in 10 British Christians, but the largest church worldwide)</td><td>Not recognised. Marriage is a sacrament, so what God has joined cannot be undone.</td><td>Only after an annulment, a ruling that a real marriage never existed (for example, one partner never truly consented).</td></tr>
+                                        <tr><td>Church of England (the largest church in Britain)</td><td>Accepted. Jesus allowed divorce for adultery.</td><td>Often allowed, but each local priest decides whether they will conduct the wedding.</td></tr>
+                                        <tr><td>Methodist and many other Protestant churches</td><td>Accepted. Most Protestants accept divorce.</td><td>Usually allowed. Most Protestants allow it.</td></tr>
+                                    </table>
+                                    <p>Separation (living apart while staying legally married) is accepted by most Christians when a marriage breaks down, especially where there is abuse.</p>
+                                    <div class="quotation"><span class="ref">Matthew 19:8-9</span>"Moses permitted you to divorce your wives because your hearts were hard. But it was not this way from the beginning. I tell you that anyone who divorces his wife, except for sexual immorality, and marries another woman commits adultery."</div>
+                                    <p>Many Protestants point to this: Jesus seems to allow divorce in the case of adultery.</p>
+                                    <div class="quotation"><span class="ref">Mark 10:9</span>"Therefore what God has joined together, let no one separate."</div>
+                                    <p>Catholics point to this: marriage is God's work, so no one can undo it.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sexual relationships -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Sexual relationships</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Sex and contraception</h4>
+                                <div class="sub-content">
+                                    <p>Traditional teaching: sex belongs within marriage and has two purposes, procreation (having children) and unity (expressing the couple's lifelong bond). Most Christians would recognise this.</p>
+                                    <p><strong>Thomas Aquinas</strong> (a thirteenth-century friar) taught Natural Law: God built purposes into human nature, and the Five Primary Precepts (worship God, live in an ordered society, reproduce, educate children, preserve life) apply in every situation. They are absolute, with no exceptions. The second Precept is to reproduce.</p>
+                                    <table>
+                                        <tr><th>View</th><th>Contraception?</th></tr>
+                                        <tr><td>Catholic</td><td>No to artificial contraception. Every act of sex must be open to having children, because of the Precept to reproduce. Natural family planning (working with the woman's natural cycle) is allowed.</td></tr>
+                                        <tr><td>Most Protestants (including the Church of England)</td><td>Yes. Responsible family planning supports family life, and sex is also about expressing love, not only having children. Most Christians in Britain use contraception.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Same-sex relationships</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Church</th><th>View on same-sex relationships</th></tr>
+                                        <tr><td>Catholic</td><td>Sexual activity belongs only within marriage between a man and a woman. Same-sex attracted people must be treated with respect, but sexual relationships are not accepted. The Catholic Church as a whole holds this.</td></tr>
+                                        <tr><td>Church of England</td><td>Does not marry same-sex couples, but since 2023 its bishops have commended the Prayers of Love and Faith: special prayers asking God's blessing on same-sex couples. Many liberal Anglicans welcome this; many conservative Anglicans oppose it.</td></tr>
+                                        <tr><td>Methodist Church in Britain</td><td>Voted in 2021 to allow same-sex marriages on Methodist premises and by Methodist ministers.</td></tr>
+                                    </table>
+                                    <div class="quotation"><span class="ref">Leviticus 20:13</span>"If a man has sexual relations with a man as one does with a woman, both of them have done what is detestable. They are to be put to death; their blood will be on their own heads."</div>
+                                    <p>Conservatives read this literally as a clear ban. Liberals reply that Old Testament law was given to ancient Israel and does not bind Christians, and that Christians who quote it should explain why they ignore other rules in the same book (such as the food laws).</p>
+                                    <div class="quotation"><span class="ref">1 Timothy 1:8-10</span>"We know that the law is good if one uses it properly. We also know that the law is made not for the righteous but for lawbreakers and rebels... for the sexually immoral, for those practicing homosexuality, for slave traders and liars and perjurers, and for whatever else is contrary to the sound doctrine."</div>
+                                    <p>Conservatives apply it today. Liberals argue the original Greek words may not refer to loving same-sex partnerships as we understand them today.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Gender: roles of women and men</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Who can lead worship?</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Church</th><th>Can women be priests or leaders?</th></tr>
+                                        <tr><td>Catholic</td><td>No. Only men can be ordained. The Church says Jesus chose only male apostles. The Catholic Church as a whole holds this.</td></tr>
+                                        <tr><td>Orthodox</td><td>No. Only men are ordained, though women hold honoured roles. The Orthodox Church as a whole holds this.</td></tr>
+                                        <tr><td>Church of England</td><td>Yes. Women priests since 1994, and women bishops since the first, Libby Lane, was consecrated in 2015. A small number of Anglicans still object, and the Church makes special arrangements for them.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>The two key texts, and why they clash</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">1 Timothy 2:11-12</span>"A woman should learn in quietness and full submission. I do not permit a woman to teach or to assume authority over a man; she must be quiet."</div>
+                                    <div class="quotation"><span class="ref">Galatians 3:27-29</span>"for all of you who were baptized into Christ have clothed yourselves with Christ. There is neither Jew nor Gentile, neither slave nor free, nor is there male and female, for you are all one in Christ Jesus."</div>
+                                    <p><strong>Conservative reading</strong> of 1 Timothy, held by the Catholic and Orthodox Churches and some evangelicals: a permanent rule. Women cannot lead men in the Church, so they cannot be priests.</p>
+                                    <p><strong>Liberal reading</strong>, held by most Anglicans, Methodists and many younger Christians: advice for one problem in one church at one time, not a rule for all time. Galatians, written earlier, says that in Christ "there is no male and female". Churches that ordain women base their position on Galatians.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT: ISLAM -->
+                <div class="branch-column">
+                    <div class="branch-group-header">Islam</div>
+
+                    <!-- Relationships and marriage -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Relationships and marriage</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Families, roles, cohabitation</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Question</th><th>Traditional view</th><th>Liberal view</th></tr>
+                                        <tr><td>What is the family for?</td><td>The family is the heart of Muslim life. Children learn the faith there and relatives owe care to one another, including the elderly. Most Muslims agree.</td><td>The same, but with more freedom in how family life is arranged. Many younger British Muslims lean this way.</td></tr>
+                                        <tr><td>Who leads the home?</td><td>Complementary roles (they suit each other, like two halves), with the husband as head of the household. Many traditional Muslims hold this.</td><td>Marriage is a partnership of equals; the Qur'an gives both partners rights and duties. Many liberal Muslims hold this.</td></tr>
+                                        <tr><td>Marriage outside the religious tradition</td><td>A Muslim man may marry a woman from the People of the Book (a Christian or a Jew), but a Muslim woman may only marry a Muslim man. Most Muslims have been taught this.</td><td>Some liberal Muslims argue Muslim women should be free to marry non-Muslims too, as long as any children are brought up Muslim. A minority in Britain accept this.</td></tr>
+                                        <tr><td>Cohabitation?</td><td>Sex belongs within marriage. Almost all Muslims, traditional and liberal alike, reject cohabitation.</td><td>The same. One point where Muslims broadly agree.</td></tr>
+                                    </table>
+                                    <div class="quotation"><span class="ref">Hadith Sahih Bukhari 9:89:252</span>"Surely! Everyone of you is a guardian and is responsible for his charges: The Imam (ruler) of the people is a guardian and is responsible for his subjects; a man is the guardian of his family (household) and is responsible for his subjects; a woman is the guardian of her husband's home and of his children and is responsible for them."</div>
+                                    <p>Traditional Muslims use this hadith (a recorded saying of the Prophet Muhammad) to support distinct roles for husband and wife. Liberal Muslims point out that it makes both partners equally responsible before God, so neither is more important.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>What marriage is</h4>
+                                <div class="sub-content">
+                                    <p>Marriage (the nikah) is a contract between husband and wife, agreed and witnessed by both, creating rights and duties for each partner. All Muslims recognise marriage as a contract. The ceremony includes the contract, the mahr (a gift of money or property from the husband to the wife, hers to keep whatever happens), witnesses and the free consent of both.</p>
+                                    <div class="quotation"><span class="ref">Qur'an 30:21</span>"And of His signs is that He created for you from yourselves mates that you may find tranquillity in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought."</div>
+                                    <p>All Muslims would use this verse to show that marriage is about love, mercy and companionship, not just a legal arrangement.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Sunni and Shi'a Muslims: temporary marriage</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Group</th><th>Temporary marriage (nikah mut'ah)?</th></tr>
+                                        <tr><td>Shi'a Muslims (about 1 in 10 Muslims worldwide)</td><td>Allowed. A marriage contract agreed for a set period of time.</td></tr>
+                                        <tr><td>Sunni Muslims (about 9 in 10)</td><td>Not allowed. Permanent marriage is the only valid kind.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Adultery, divorce, separation and re-marriage</h4>
+                                <div class="sub-content">
+                                    <p>Adultery is strictly forbidden by Qur'an 17:32. Almost all Muslims accept that divorce is permitted but should be avoided, and treat it as a last resort, with waiting periods and attempts at reconciliation first.</p>
+                                    <p>Separation (living apart while remaining married) is accepted by many Muslims where a marriage has broken down but divorce has not taken place, for example while reconciliation is still being attempted.</p>
+                                    <table>
+                                        <tr><th>Route</th><th>What it is</th></tr>
+                                        <tr><td>Talaq</td><td>Divorce initiated by the husband. The most commonly used route.</td></tr>
+                                        <tr><td>Khul'</td><td>Divorce initiated by the wife, usually by returning her mahr to her husband. Growing numbers of Muslim women in Britain use this route.</td></tr>
+                                        <tr><td>Faskh</td><td>An annulment granted by an Islamic court or council, for example when a wife cannot get her husband's agreement but the marriage has broken down. In Britain, some Muslim women apply to Shariah councils for this religious divorce, because a civil divorce alone does not always end the marriage religiously.</td></tr>
+                                    </table>
+                                    <p>Re-marriage is permitted after divorce or widowhood.</p>
+                                    <div class="quotation"><span class="ref">Qur'an 4:35</span>"And if you fear dissension between the two, send an arbitrator from his people and an arbitrator from her people. If they both desire reconciliation, Allah will cause it between them."</div>
+                                    <p>Before divorce, an arbitrator (a peacemaker) from each side of the family must try to bring the couple back together. Most Islamic teaching treats this reconciliation step as essential.</p>
+                                    <div class="quotation"><span class="ref">Qur'an 4:128-130</span>"And if a woman fears from her husband contempt or evasion, there is no sin upon them if they make terms of settlement between them, and settlement is best... But if they separate, Allah will enrich each of them from His abundance."</div>
+                                    <p>Staying together peacefully is best, but if they cannot, God will provide for both of them. Divorce is therefore permitted, not encouraged.</p>
+                                    <div class="quotation"><span class="ref">Qur'an 2:229</span>"Divorce is twice. Then, either keep her in an acceptable manner or release her with good treatment."</div>
+                                    <p>Divorce is limited and controlled, and the spouse must be kept honourably or released kindly, never used to harm or humiliate.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Arranged marriage in Britain</h4>
+                                <div class="sub-content">
+                                    <p>An arranged marriage is one where families introduce the couple, but the couple must both give free consent. A forced marriage (where one or both do not consent) is forbidden in Islam and illegal in Britain. All Muslim authorities condemn forced marriage. British Muslim families differ: some families rely on family introductions, while many younger Muslims prefer to meet partners independently.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sexual relationships -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Sexual relationships</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Sex and contraception</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 17:32</span>"And do not approach unlawful sexual intercourse. Indeed, it is ever an immorality and is evil as a way."</div>
+                                    <p>Sex belongs within marriage, and almost all Muslims accept this teaching. The verse says do not even approach unlawful sex: Muslims see this as God protecting people from temptation in the first place.</p>
+                                    <table>
+                                        <tr><th>View</th><th>Contraception?</th></tr>
+                                        <tr><td>Many Muslim scholars (traditional and liberal alike)</td><td>Yes. The Prophet's companions are recorded as permitting a method that prevents pregnancy, so contraception is allowed for responsible family planning. Most Muslims in Britain use contraception.</td></tr>
+                                        <tr><td>Some more traditional Muslims</td><td>Limit or avoid it, because children are a blessing from God.</td></tr>
+                                        <tr><td>Almost all Muslims agree</td><td>Permanent methods (such as sterilisation) are not permitted, because they cut off the possibility of children altogether.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Same-sex relationships</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 7:80-81</span>"And We had sent Lot when he said to his people, 'Do you commit such immorality as no one has preceded you with from among the worlds? Indeed, you approach men with desire, instead of women. Rather, you are a transgressing people.'"</div>
+                                    <p>Mainstream teaching across Sunni and Shi'a Islam, traditional and liberal, is that same-sex sexual relationships go against God's design. A small number of liberal Muslims argue the story of Lot is really about sexual violence and betrayal of guests, not loving relationships, but this remains a minority view.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Gender: roles of women and men</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>In worship and authority</h4>
+                                <div class="sub-content">
+                                    <p>Men and women usually pray in separate areas of the mosque. Most mosques in Britain follow this.</p>
+                                    <p>The main congregation is traditionally led by a man. Most traditional scholars keep leadership of prayer for men; some more liberal scholars permit a woman to lead prayers for a women-only congregation.</p>
+                                    <p>Traditional Muslims argue that Islam gave women rights (to property, and to consent to marriage) centuries before they were secured in Britain, so separate roles are not unequal ones. Liberal Muslims reply that some customs restrict women today, and that culture, not the Qur'an, is often the real cause.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>The three key texts</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 2:228</span>"And due to the wives is similar to what is expected of them, according to what is reasonable. But the men have a degree over them. And Allah is Exalted in Might and Wise."</div>
+                                    <p>Wives and husbands have the same rights and duties over each other, but men have "a degree" over them. Traditional Muslims read this as men's authority. Liberal Muslims read it as men's responsibility, a duty to look after, not power over.</p>
+                                    <div class="quotation"><span class="ref">Qur'an 40:40</span>"Whoever does an evil deed will not be recompensed except by the like thereof; but whoever does righteousness, whether male or female, while he is a believer, those will enter Paradise, being given provision therein without account."</div>
+                                    <p>Whatever your gender, the same standard applies and the same reward follows: the spiritual equality of men and women. All Muslims accept this teaching of equal spiritual worth.</p>
+                                    <div class="quotation"><span class="ref">Qur'an 4:1</span>"O mankind, fear your Lord, who created you from one soul and created from it its mate and dispersed from both of them many men and women..."</div>
+                                    <p>Everyone comes from one soul: men and women are of equal worth, made from the same creation. Both traditional and liberal Muslims use this verse, though they draw different conclusions from it about roles in worship and the home.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNode(element) {
+            element.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
