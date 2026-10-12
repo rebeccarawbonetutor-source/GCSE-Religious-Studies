@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCSE Religious Studies — Index</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --card-border: #94a3b8;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-primary: #0369a1;
+            --accent-header: #075985;
+            --hover-bg: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Century Gothic", "CenturyGothic", "AppleGothic", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-size: 1.02rem;
+            line-height: 1.5;
+        }
+
+        header {
+            padding: 3rem 1rem 2rem;
+            text-align: center;
+            background: #ffffff;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--accent-header);
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            width: 100%;
+        }
+
+        .paper {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-left: 5px solid var(--accent-primary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+        }
+
+        .paper-title {
+            font-size: 1.5rem;
+            color: var(--accent-header);
+            font-weight: bold;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .paper-sub {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .themes {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .theme-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-left: 3px solid var(--accent-primary);
+            border-radius: 0 6px 6px 0;
+            padding: 0.9rem 1.1rem;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .theme-link:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .theme-link .arrow {
+            color: var(--accent-primary);
+            font-weight: bold;
+        }
+
+        .theme-link.single {
+            font-size: 1.15rem;
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 2rem 1rem; }
+            header h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>GCSE Religious Studies</h1>
+    </header>
+
+    <div class="container">
+
+        <div class="paper">
+            <div class="paper-title">Paper 1</div>
+            <div class="paper-sub">Religious, Philosophical and Ethical Studies in the Modern World</div>
+            <div class="themes">
+                <a href="theme1-relationships.html" class="theme-link">Theme 1: Issues of relationships <span class="arrow">&#8594;</span></a>
+                <a href="theme2-life-and-death.html" class="theme-link">Theme 2: Issues of life and death <span class="arrow">&#8594;</span></a>
+                <a href="theme3-good-and-evil.html" class="theme-link">Theme 3: Issues of good and evil <span class="arrow">&#8594;</span></a>
+                <a href="theme4-human-rights.html" class="theme-link">Theme 4: Issues of human rights <span class="arrow">&#8594;</span></a>
+            </div>
+        </div>
+
+        <div class="paper">
+            <div class="paper-title">Paper 2</div>
+            <div class="themes">
+                <a href="paper2-christianity.html" class="theme-link single">Christianity <span class="arrow">&#8594;</span></a>
+            </div>
+        </div>
+
+        <div class="paper">
+            <div class="paper-title">Paper 3</div>
+            <div class="themes">
+                <a href="paper3-islam.html" class="theme-link single">Islam <span class="arrow">&#8594;</span></a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
