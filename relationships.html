@@ -40,6 +40,32 @@
             text-align: center;
             border-bottom: 1px solid #cbd5e1;
             background: #ffffff;
+            position: relative;
+        }
+
+        .nav-container {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background-color: #ffffff;
+            color: var(--accent-header);
+            border: 1px solid var(--card-border);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--hover-bg);
+            border-color: var(--accent-primary);
         }
 
         header h1 {
@@ -258,11 +284,22 @@
                 display: none;
             }
         }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                position: static;
+                justify-content: center;
+                margin-bottom: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
 
     <header>
+        <div class="nav-container">
+            <a href="index.html" class="nav-btn">Home</a>
+        </div>
         <h1>Paper 1</h1>
     </header>
 
@@ -357,7 +394,7 @@
                                     </table>
                                     <div class="quotation"><span class="ref">Leviticus 20:13</span>"If a man has sexual relations with a man as one does with a woman, both of them have done what is detestable. They are to be put to death; their blood will be on their own heads."</div>
                                     <p>Conservatives read this literally as a clear ban. Liberals reply that Old Testament law was given to ancient Israel and does not bind Christians, and that Christians who quote it should explain why they ignore other rules in the same book (such as the food laws).</p>
-                                    <div class="quotation"><span class="ref">1 Timothy 1:8-10</span>"We know that the law is good if one uses it properly. We also know that the law is made not for the righteous but for lawbreakers and rebels... for the sexually immoral, for those practicing homosexuality, for slave traders and liars and perjurers, and for whatever else is contrary to the sound doctrine."</div>
+                                    <div class="quotation"><span class="ref">1 Timothy 1:8-10</span>"We know that the law is good if one uses it properly. We also know that the law is made not for the righteous but for lawbreakers and rebels... for the sexually immoral, for those practising homosexuality, for slave traders and liars and perjurers, and for whatever else is contrary to the sound doctrine."</div>
                                     <p>Conservatives apply it today. Liberals argue the original Greek words may not refer to loving same-sex partnerships as we understand them today.</p>
                                 </div>
                             </div>
