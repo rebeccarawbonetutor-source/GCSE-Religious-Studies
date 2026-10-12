@@ -40,6 +40,32 @@
             text-align: center;
             border-bottom: 1px solid #cbd5e1;
             background: #ffffff;
+            position: relative;
+        }
+
+        .nav-container {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background-color: #ffffff;
+            color: var(--accent-header);
+            border: 1px solid var(--card-border);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--hover-bg);
+            border-color: var(--accent-primary);
         }
 
         header h1 {
@@ -258,11 +284,22 @@
                 display: none;
             }
         }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                position: static;
+                justify-content: center;
+                margin-bottom: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
 
     <header>
+        <div class="nav-container">
+            <a href="index.html" class="nav-btn">Home</a>
+        </div>
         <h1>Paper 1</h1>
     </header>
 
@@ -377,7 +414,7 @@
                             <div class="sub-node" onclick="toggleNode(this)">
                                 <h4>Human and animal life: Singer and Dignity in Dying</h4>
                                 <div class="sub-content">
-                                    <div class="quotation"><span class="ref">Peter Singer (on 'speciesism', All Animals Are Equal)</span>"Speciesism... is a prejudice or attitude of bias in favor of the interests of members of one's own species and against those of members of other species."</div>
+                                    <div class="quotation"><span class="ref">Peter Singer (on 'speciesism', All Animals Are Equal)</span>"Speciesism... is a prejudice or attitude of bias in favour of the interests of members of one's own species and against those of members of other species."</div>
                                     <p>Singer, a utilitarian philosopher, argues that the capacity to suffer, not species membership, is what matters morally. Causing animal suffering for trivial benefits (factory farming, cosmetic testing) is wrong, in the same way racism or sexism is wrong. This challenges the religious idea that only human life has special status.</p>
                                     <div class="quotation"><span class="ref">Dignity in Dying</span>Campaigns for "terminally ill adults [to be given] the option of a painless, assisted death, within strict legal safeguards".</div>
                                     <p>Humanists value quality of life: Dignity in Dying (supported by many humanists) argues a person suffering unbearably at the end of life should have the choice of an assisted death. Religious opponents reply that this puts pressure on vulnerable people and undermines the sanctity of life.</p>
@@ -397,7 +434,7 @@
                                 <div class="sub-content">
                                     <p>Christians believe in life after death: the soul is the non-physical part of a person that survives death, and after death comes judgement by God, followed by heaven (eternal life with God) or hell (eternal separation from God).</p>
                                     <div class="quotation"><span class="ref">John 11:24-27</span>"Martha answered, 'I know he will rise again in the resurrection at the last day.' Jesus said to her, 'I am the resurrection and the life. The one who believes in me will live, even though they die; and whoever lives by believing in me will never die. Do you believe this?' 'Yes, Lord,' she replied, 'I believe that you are the Messiah, the Son of God, who is to come into the world.'"</div>
-                                    <div class="quotation"><span class="ref">1 Corinthians 15:42-44</span>"So will it be with the resurrection of the dead. The body that is sown is perishable, it is raised imperishable; it is sown in dishonor, it is raised in glory; it is sown in weakness, it is raised in power; it is sown a natural body, it is raised a spiritual body."</div>
+                                    <div class="quotation"><span class="ref">1 Corinthians 15:42-44</span>"So will it be with the resurrection of the dead. The body that is sown is perishable, it is raised imperishable; it is sown in dishonour, it is raised in glory; it is sown in weakness, it is raised in power; it is sown a natural body, it is raised a spiritual body."</div>
                                 </div>
                             </div>
                             <div class="sub-node" onclick="toggleNode(this)">
@@ -520,7 +557,7 @@
                             <div class="sub-node" onclick="toggleNode(this)">
                                 <h4>Human and animal life: Singer and Dignity in Dying</h4>
                                 <div class="sub-content">
-                                    <div class="quotation"><span class="ref">Peter Singer (on 'speciesism')</span>"Speciesism... is a prejudice or attitude of bias in favor of the interests of members of one's own species and against those of members of other species."</div>
+                                    <div class="quotation"><span class="ref">Peter Singer (on 'speciesism')</span>"Speciesism... is a prejudice or attitude of bias in favour of the interests of members of one's own species and against those of members of other species."</div>
                                     <p>Singer argues that suffering, not species, is what counts morally, so needless animal suffering is wrong. This contrasts with the Islamic view that humans are Allah's khalifahs, given authority over animals but required to treat them with compassion; most Muslims accept using animals for food but insist they are treated well and slaughtered humanely.</p>
                                     <div class="quotation"><span class="ref">Dignity in Dying</span>Campaigns for "terminally ill adults [to be given] the option of a painless, assisted death, within strict legal safeguards".</div>
                                     <p>Humanists prioritise quality of life and personal choice at the end of life. Muslims respond that only Allah gives and takes life (Qur'an 30:40), so no person may choose the moment of death.</p>
