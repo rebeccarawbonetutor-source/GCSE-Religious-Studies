@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper 1: Theme 2 — Issues of Life and Death</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --card-border: #94a3b8;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-primary: #0369a1;
+            --accent-header: #075985;
+            --hover-bg: #f1f5f9;
+            --line-color: #0369a1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Century Gothic", "CenturyGothic", "AppleGothic", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: auto;
+            font-size: 1.02rem;
+            line-height: 1.5;
+        }
+
+        header {
+            padding: 1.5rem 1rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid #cbd5e1;
+            background: #ffffff;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--accent-header);
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+        }
+
+        .mindmap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .root-node {
+            background-color: var(--accent-header);
+            color: #ffffff;
+            padding: 1.2rem 3rem;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.4rem;
+            box-shadow: 0 10px 15px -3px rgba(3, 105, 161, 0.2);
+            z-index: 2;
+            text-align: center;
+            margin-bottom: 4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .branches-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            width: 100%;
+            max-width: 1600px;
+            position: relative;
+        }
+
+        .branches-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            width: 3px;
+            height: 40px;
+            background-color: var(--line-color);
+            transform: translateX(-50%);
+        }
+
+        .branch-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        .branch-group-header {
+            background-color: #e0f2fe;
+            border: 2px solid var(--accent-primary);
+            color: var(--accent-header);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .node-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-left: 5px solid var(--accent-primary);
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .node-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -3px rgba(3, 105, 161, 0.15);
+        }
+
+        .node-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .node-header h3 {
+            font-size: 1.15rem;
+            color: var(--accent-header);
+            font-weight: 700;
+        }
+
+        .sub-nodes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .sub-node {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-left: 3px solid var(--accent-primary);
+            border-radius: 0 6px 6px 0;
+            padding: 0.75rem;
+            font-size: 0.98rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .sub-node:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .sub-node h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .sub-node h4::after {
+            content: '+';
+            color: var(--accent-primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .sub-node.active h4::after {
+            content: '-';
+        }
+
+        .sub-content {
+            display: none;
+            margin-top: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.5;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 0.5rem;
+        }
+
+        .sub-node.active .sub-content {
+            display: block;
+        }
+
+        .sub-content p {
+            margin-bottom: 0.5rem;
+        }
+
+        .quotation {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-left: 3px solid var(--accent-primary);
+            padding: 0.6rem 0.8rem;
+            margin: 0.6rem 0;
+            font-size: 0.95rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .quotation .ref {
+            font-weight: bold;
+            color: var(--accent-header);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #cbd5e1;
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 0.45rem 0.6rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            font-weight: bold;
+            background-color: #f1f5f9;
+            color: var(--accent-header);
+        }
+
+        @media (max-width: 1024px) {
+            .branches-wrapper {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .branches-wrapper::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Paper 1</h1>
+    </header>
+
+    <div class="container">
+        <div class="mindmap">
+            <div class="root-node">Theme 2: Issues of life and death</div>
+
+            <div class="branches-wrapper">
+
+                <!-- LEFT: CHRISTIANITY AND NON-RELIGIOUS -->
+                <div class="branch-column">
+                    <div class="branch-group-header">Christianity and non-religious views</div>
+
+                    <!-- The world -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>The world</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Origin of the universe: Genesis 1 and 2</h4>
+                                <div class="sub-content">
+                                    <p>Genesis 1: God creates in six days by speaking, ending each day with "God saw that it was good"; humans created last, in God's image. Genesis 2: a closer account, God forms Adam from dust, breathes life into him, and creates Eve from Adam's rib.</p>
+                                    <table>
+                                        <tr><th>View</th><th>Attitude</th></tr>
+                                        <tr><td>Conservative Christians (many evangelicals)</td><td>Literally true: God created in six actual days (creationism).</td></tr>
+                                        <tr><td>Most other Christians, including the Catholic Church and most Anglicans</td><td>True but not science: God created everything deliberately and creation is good, while the "days" can be periods or a literary framework. This allows acceptance of the Big Bang and evolution.</td></tr>
+                                    </table>
+                                    <div class="quotation"><span class="ref">Genesis 1:31</span>"God saw all that he had made, and it was very good. And there was evening, and there was morning, the sixth day."</div>
+                                    <p>Christians use this to argue creation is good, valued by God, and to be cared for.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Christian views and non-religious views of creation</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Brian Cox (physicist)</span>"We are the cosmos made conscious and life is the means by which the universe understands itself."</div>
+                                    <p>Cox explains the universe through the Big Bang: around 13.8 billion years ago the universe was extremely hot and dense and has been expanding ever since. No scientific evidence points to a creator.</p>
+                                    <table>
+                                        <tr><th>View</th><th>Attitude</th></tr>
+                                        <tr><td>Atheists</td><td>The universe needs no explanation beyond science. Adding God is unnecessary.</td></tr>
+                                        <tr><td>Creationist Christians</td><td>Science and Genesis conflict, and Genesis should be read as literally true.</td></tr>
+                                        <tr><td>Most Christians</td><td>No conflict. Science explains how; Genesis explains who and why. Many see the Big Bang as the moment God chose to begin creation. The Catholic Church accepts the Big Bang (first proposed by a Catholic priest, Georges Lemaitre).</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Dominion, stewardship, environmental responsibility, global citizenship</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Genesis 1:28</span>"God blessed them and said to them, 'Be fruitful and increase in number; fill the earth and subdue it. Rule over the fish in the sea and the birds in the sky and over every living creature that moves on the ground.'"</div>
+                                    <div class="quotation"><span class="ref">Psalm 8:6</span>"You made them rulers over the works of your hands; you put everything under their feet."</div>
+                                    <table>
+                                        <tr><th>Concept</th><th>Meaning</th></tr>
+                                        <tr><td>Dominion</td><td>Humans have been given authority over the rest of creation.</td></tr>
+                                        <tr><td>Stewardship</td><td>Humans are caretakers, not owners: God owns creation, and humans must look after it on his behalf. The mainstream Christian view today.</td></tr>
+                                    </table>
+                                    <p>Traditional or literal reading of Genesis 1:28 ("subdue it", "rule over") has been used to justify exploiting nature, though very few Christians now take this line. Most Christians today read it as a job description for stewardship: ruling responsibly, as God would, and see environmental damage as a failure of stewardship.</p>
+                                    <p>Humanists: with no belief in an afterlife, many argue this life is the only one, so protecting the planet for future generations is a moral duty based on human welfare alone.</p>
+                                    <div class="quotation"><span class="ref">Humanist Climate Action (Humanists UK)</span>"committed to redefining lifestyles and campaigning for policies that promote low-carbon, ethical, and sustainable living in the light of the degeneration of the Earth's climate and biodiversity."</div>
+                                    <p>Global citizenship: everyone shares responsibility for the whole planet, so problems such as climate change need action across borders.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origin and value of human life -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Origin and value of human life</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Origin and sanctity of human life</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Genesis 1:31</span>"God saw all that he had made, and it was very good."</div>
+                                    <p>God made humans as the final act of creation and saw all he had made as very good: human life has unique value.</p>
+                                    <div class="quotation"><span class="ref">Jeremiah 1:5</span>"Before I formed you in the womb I knew you, before you were born I set you apart; I appointed you as a prophet to the nations."</div>
+                                    <p>God knew Jeremiah before he was formed in the womb. Christians use this to argue life is sacred from conception: each person is known and planned by God.</p>
+                                    <p>Sanctity of life: for most Christians, all human life is holy because it is a gift from God made in God's image, so only God has the right to end it.</p>
+                                    <table>
+                                        <tr><th>View</th><th>Attitude</th></tr>
+                                        <tr><td>Catholic</td><td>Life is sacred from conception to natural death. Abortion and euthanasia are always wrong.</td></tr>
+                                        <tr><td>Many Anglicans and Methodists</td><td>Life is sacred, but in hard cases (risk to the mother's life, extreme suffering) other factors may be weighed, so abortion or withdrawal of treatment can be acceptable.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Non-religious beliefs about evolution</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Thinker</th><th>Belief</th></tr>
+                                        <tr><td>Charles Darwin</td><td>On the Origin of Species (1859): all species, including humans, developed by natural selection. Creatures with helpful traits are more likely to reproduce, so new species emerge over long periods.</td></tr>
+                                        <tr><td>Richard Dawkins</td><td>The Selfish Gene (1976): evolution is driven by genes copying themselves, and we exist to pass on our genes. The God Delusion (2006): evolution removes the need for a designer.</td></tr>
+                                    </table>
+                                    <table>
+                                        <tr><th>View</th><th>Attitude</th></tr>
+                                        <tr><td>Atheists and humanists</td><td>Evolution fully explains the variety of life, so no designer is needed. Humans are animals that evolved, not specially created beings.</td></tr>
+                                        <tr><td>Most Christians</td><td>Evolution and faith can both be true: evolution is the method God used, and humans still bear God's image and have souls.</td></tr>
+                                        <tr><td>Creationist Christians</td><td>Evolution conflicts with Genesis and is rejected.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Abortion and euthanasia</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Issue</th><th>Diverse Christian attitudes</th></tr>
+                                        <tr><td>Abortion</td><td>Catholic: always wrong, because life begins at conception and is sacred. Many Protestants: generally wrong, but acceptable in some circumstances (risk to the mother's life, rape), weighing sanctity of life against compassion and quality of life. Most Christians support reducing the need for abortion by supporting mothers.</td></tr>
+                                        <tr><td>Euthanasia</td><td>Catholic and most Christians: always wrong. Only God gives and takes life (Job 1:21), and suffering can have purpose; instead, Christians support hospice care and relief of pain. Some liberal Christians: in rare cases of unbearable suffering, allowing someone to die (for example, withdrawing treatment) is compassionate, though active killing remains wrong for most.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Human and animal life: Singer and Dignity in Dying</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Peter Singer (on 'speciesism', All Animals Are Equal)</span>"Speciesism... is a prejudice or attitude of bias in favor of the interests of members of one's own species and against those of members of other species."</div>
+                                    <p>Singer, a utilitarian philosopher, argues that the capacity to suffer, not species membership, is what matters morally. Causing animal suffering for trivial benefits (factory farming, cosmetic testing) is wrong, in the same way racism or sexism is wrong. This challenges the religious idea that only human life has special status.</p>
+                                    <div class="quotation"><span class="ref">Dignity in Dying</span>Campaigns for "terminally ill adults [to be given] the option of a painless, assisted death, within strict legal safeguards".</div>
+                                    <p>Humanists value quality of life: Dignity in Dying (supported by many humanists) argues a person suffering unbearably at the end of life should have the choice of an assisted death. Religious opponents reply that this puts pressure on vulnerable people and undermines the sanctity of life.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Death and afterlife -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Death and the afterlife</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Christian beliefs about life after death</h4>
+                                <div class="sub-content">
+                                    <p>Christians believe in life after death: the soul is the non-physical part of a person that survives death, and after death comes judgement by God, followed by heaven (eternal life with God) or hell (eternal separation from God).</p>
+                                    <div class="quotation"><span class="ref">John 11:24-27</span>"Martha answered, 'I know he will rise again in the resurrection at the last day.' Jesus said to her, 'I am the resurrection and the life. The one who believes in me will live, even though they die; and whoever lives by believing in me will never die. Do you believe this?' 'Yes, Lord,' she replied, 'I believe that you are the Messiah, the Son of God, who is to come into the world.'"</div>
+                                    <div class="quotation"><span class="ref">1 Corinthians 15:42-44</span>"So will it be with the resurrection of the dead. The body that is sown is perishable, it is raised imperishable; it is sown in dishonor, it is raised in glory; it is sown in weakness, it is raised in power; it is sown a natural body, it is raised a spiritual body."</div>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Diverse Christian beliefs about the afterlife</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>View</th><th>Belief</th></tr>
+                                        <tr><td>Most Christians, including Catholics</td><td>Bodily resurrection: the dead will be raised, as Christ was, with a transformed spiritual body (1 Corinthians 15). Judgement follows death, then heaven or hell.</td></tr>
+                                        <tr><td>Catholic</td><td>Includes purgatory: a cleansing process for those who die forgiven but not yet pure, before heaven.</td></tr>
+                                        <tr><td>Some liberal Christians</td><td>The afterlife may be understood less literally: heaven and hell as states of being with or without God rather than physical places, or as symbols of the hope that love outlasts death.</td></tr>
+                                        <tr><td>A minority of Christians</td><td>Universalism: in the end all people will be saved, so hell is not everlasting.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Christian and Humanist funerals in Britain</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Feature</th><th>What it shows about belief</th></tr>
+                                        <tr><td>Christian funeral</td><td>Prayers for the soul of the person, Bible readings such as John 11:25 ("I am the resurrection and the life"), and words of hope in resurrection and being with God. Reflects belief in judgement and an afterlife.</td></tr>
+                                        <tr><td>Humanist funeral</td><td>No religious content. Celebrates the life and character of the person who has died, with shared memories, and treats death as the natural end of a life. Reflects the humanist belief that this life is the only one, so what matters is the life that was lived and the memories left behind.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT: ISLAM AND NON-RELIGIOUS -->
+                <div class="branch-column">
+                    <div class="branch-group-header">Islam and non-religious views</div>
+
+                    <!-- The world -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>The world</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>The origin of the universe</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 36:81</span>"Is not He who created the heavens and the earth Able to create the likes of them? Yes, it is so; and He is the Knowing Creator."</div>
+                                    <div class="quotation"><span class="ref">Qur'an 7:54</span>"Indeed, your Lord is Allah, who created the heavens and earth in six days and then established Himself above the Throne... His is the creation and the command; blessed is Allah, Lord of the worlds."</div>
+                                    <p>Muslims believe Allah created the universe deliberately and remains in control of it ("His is the creation and the command"). The "six days" are not understood by most Muslims as six 24-hour days, since a "day" in the Qur'an can mean a period of unknown length.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Islamic views and non-religious views of creation</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>View</th><th>Attitude</th></tr>
+                                        <tr><td>Atheists</td><td>The Big Bang and physics explain the universe with no need for God. Brian Cox: the universe came from a hot, dense state 13.8 billion years ago and developed by natural processes alone.</td></tr>
+                                        <tr><td>Most Muslims</td><td>No conflict between faith and science: Allah created the Big Bang and set the laws that make the universe develop. The Qur'an describes creation, science describes the process.</td></tr>
+                                        <tr><td>Some conservative Muslims</td><td>Science and the Qur'an conflict where the Qur'an is read literally, and the Qur'an must be given priority.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Fitra, khalifah, environmental responsibility, global citizenship</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Concept</th><th>Meaning</th></tr>
+                                        <tr><td>Fitra</td><td>The natural state in which Allah created every human being, with an inbuilt awareness of God and goodness.</td></tr>
+                                        <tr><td>Khalifah</td><td>Stewardship or trusteeship: humans are Allah's deputies (khalifahs) on earth, trusted to care for creation on his behalf.</td></tr>
+                                    </table>
+                                    <p>Because the earth belongs to Allah and humans are only his trustees, wasting resources or damaging the environment is a betrayal of trust. Caring for the planet is part of being a good Muslim, and many Muslims see global cooperation as the way to meet shared environmental problems.</p>
+                                    <div class="quotation"><span class="ref">Humanist Climate Action (Humanists UK)</span>"committed to redefining lifestyles and campaigning for policies that promote low-carbon, ethical, and sustainable living in the light of the degeneration of the Earth's climate and biodiversity."</div>
+                                    <table>
+                                        <tr><th>View</th><th>Reason for caring for the environment</th></tr>
+                                        <tr><td>Muslims</td><td>Duty to Allah: humans are khalifahs, answerable to Allah for how they treat his creation.</td></tr>
+                                        <tr><td>Humanists</td><td>Duty to humanity and other species: this world is the only one, so it must be protected for present and future life.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origin and value of human life -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Origin and value of human life</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Origin and sanctity of human life</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 5:32</span>"...whoever kills a soul unless for a soul or for corruption done in the land, it is as if he had slain mankind entirely. And whoever saves one, it is as if he had saved mankind entirely."</div>
+                                    <div class="quotation"><span class="ref">Qur'an 6:151</span>"Do not kill your children out of poverty; We will provide for you and them... And do not kill the soul which Allah has forbidden to be killed except by right."</div>
+                                    <p>Killing one innocent person is treated as killing all of humanity, and saving one life as saving all of humanity: human life is sacred because Allah gives it. Killing children (for example, through abortion or infanticide) is forbidden, and trust in Allah's provision is commanded instead.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Non-religious beliefs about evolution</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Thinker</th><th>Belief</th></tr>
+                                        <tr><td>Charles Darwin</td><td>All species developed by natural selection from earlier, simpler forms, including humans.</td></tr>
+                                        <tr><td>Richard Dawkins</td><td>Evolution is driven by genes, and makes a creator unnecessary.</td></tr>
+                                    </table>
+                                    <table>
+                                        <tr><th>View</th><th>Attitude</th></tr>
+                                        <tr><td>Most Muslims</td><td>No conflict: Allah created the process of development in living things. However, most Muslims hold that humans were created specially by Allah, so human evolution from earlier species is generally rejected.</td></tr>
+                                        <tr><td>Atheists</td><td>Evolution fully explains human life with no designer.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Abortion and euthanasia</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 30:40</span>"Allah is the one who created you, then provided for you, then will cause you to die, and then will give you life."</div>
+                                    <p>Only Allah gives life, sustains it, ends it and restores it. Human beings must not take over those roles, which is why euthanasia is rejected by mainstream Islamic teaching.</p>
+                                    <table>
+                                        <tr><th>Issue</th><th>Islamic attitudes</th></tr>
+                                        <tr><td>Abortion</td><td>Generally forbidden, because life is sacred and belongs to Allah. Most scholars allow it only where the mother's life is at risk, since saving an existing life takes priority; many allow it in the first 120 days, before the soul is believed to be breathed into the foetus, though views differ. A small number allow more freedom in early pregnancy; others allow it only to save the mother.</td></tr>
+                                        <tr><td>Euthanasia</td><td>Rejected by mainstream Sunni and Shi'a teaching: Allah alone decides when life ends, and suffering is a test. Withdrawing pointless treatment is debated, but actively ending a life is not accepted. Palliative care is supported.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Human and animal life: Singer and Dignity in Dying</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Peter Singer (on 'speciesism')</span>"Speciesism... is a prejudice or attitude of bias in favor of the interests of members of one's own species and against those of members of other species."</div>
+                                    <p>Singer argues that suffering, not species, is what counts morally, so needless animal suffering is wrong. This contrasts with the Islamic view that humans are Allah's khalifahs, given authority over animals but required to treat them with compassion; most Muslims accept using animals for food but insist they are treated well and slaughtered humanely.</p>
+                                    <div class="quotation"><span class="ref">Dignity in Dying</span>Campaigns for "terminally ill adults [to be given] the option of a painless, assisted death, within strict legal safeguards".</div>
+                                    <p>Humanists prioritise quality of life and personal choice at the end of life. Muslims respond that only Allah gives and takes life (Qur'an 30:40), so no person may choose the moment of death.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Death and afterlife -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Death and the afterlife</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Islamic beliefs about life after death</h4>
+                                <div class="sub-content">
+                                    <p>Muslims believe in the akhirah (the afterlife): this life is a test, and after death each person is resurrected and judged by Allah, before heaven (Jannah) or hell (Jahannam). The soul continues after death.</p>
+                                    <div class="quotation"><span class="ref">Qur'an 46:33</span>"Do they not see that Allah, who created the heavens and earth and did not fail in their creation, is able to give life to the dead? Yes. Indeed, He is over all things competent."</div>
+                                    <p>If Allah could create the universe, he can certainly raise the dead: the resurrection is certain.</p>
+                                    <div class="quotation"><span class="ref">Qur'an 3:16</span>"Those who say, 'Our Lord, indeed we have believed, so forgive us our sins and protect us from the punishment of the Fire.'"</div>
+                                    <p>Believers pray for forgiveness and protection from hell, showing belief in judgement after death.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Islamic and Humanist funerals in Britain</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Feature</th><th>What it shows about belief</th></tr>
+                                        <tr><td>Islamic funeral</td><td>The body is washed, wrapped in a simple shroud and buried quickly, without cremation, facing Makkah. Prayers are said for the person, who is believed to face questioning in the grave before the Day of Judgement. Burial (not cremation) reflects belief in bodily resurrection.</td></tr>
+                                        <tr><td>Humanist funeral</td><td>No religious content: it celebrates the person's life and character, with tributes, music and memories, treating death as the natural end. Reflects the humanist belief that there is no afterlife, so the life lived is what matters.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Diversity of views regarding Muslim worship at graves</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>View</th><th>Attitude</th></tr>
+                                        <tr><td>Many Muslims, especially in South Asian and Middle Eastern communities</td><td>Visiting graves to pray for the dead, recite the Qur'an and remember them is good practice; some also ask righteous people (including saints) to pray to Allah on their behalf.</td></tr>
+                                        <tr><td>Many conservative and Salafi Muslims</td><td>Praying to anyone besides Allah is shirk (associating partners with Allah), the gravest sin. Visiting graves to remember death is allowed, but asking the dead to intercede is wrong.</td></tr>
+                                    </table>
+                                    <p>A ready-made example of diversity within Islam for the exam.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNode(element) {
+            element.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
