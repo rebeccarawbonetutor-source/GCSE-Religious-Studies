@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper 1: Theme 4 — Issues of Human Rights</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --card-border: #94a3b8;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-primary: #0369a1;
+            --accent-header: #075985;
+            --hover-bg: #f1f5f9;
+            --line-color: #0369a1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Century Gothic", "CenturyGothic", "AppleGothic", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: auto;
+            font-size: 1.02rem;
+            line-height: 1.5;
+        }
+
+        header {
+            padding: 1.5rem 1rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid #cbd5e1;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .nav-container {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background-color: #ffffff;
+            color: var(--accent-header);
+            border: 1px solid var(--card-border);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--hover-bg);
+            border-color: var(--accent-primary);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--accent-header);
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+        }
+
+        .mindmap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .root-node {
+            background-color: var(--accent-header);
+            color: #ffffff;
+            padding: 1.2rem 3rem;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.4rem;
+            box-shadow: 0 10px 15px -3px rgba(3, 105, 161, 0.2);
+            z-index: 2;
+            text-align: center;
+            margin-bottom: 4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .branches-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            width: 100%;
+            max-width: 1600px;
+            position: relative;
+        }
+
+        .branches-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            width: 3px;
+            height: 40px;
+            background-color: var(--line-color);
+            transform: translateX(-50%);
+        }
+
+        .branch-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        .branch-group-header {
+            background-color: #e0f2fe;
+            border: 2px solid var(--accent-primary);
+            color: var(--accent-header);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .node-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-left: 5px solid var(--accent-primary);
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .node-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -3px rgba(3, 105, 161, 0.15);
+        }
+
+        .node-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .node-header h3 {
+            font-size: 1.15rem;
+            color: var(--accent-header);
+            font-weight: 700;
+        }
+
+        .sub-nodes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .sub-node {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-left: 3px solid var(--accent-primary);
+            border-radius: 0 6px 6px 0;
+            padding: 0.75rem;
+            font-size: 0.98rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .sub-node:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .sub-node h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .sub-node h4::after {
+            content: '+';
+            color: var(--accent-primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .sub-node.active h4::after {
+            content: '-';
+        }
+
+        .sub-content {
+            display: none;
+            margin-top: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.5;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 0.5rem;
+        }
+
+        .sub-node.active .sub-content {
+            display: block;
+        }
+
+        .sub-content p {
+            margin-bottom: 0.5rem;
+        }
+
+        .quotation {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-left: 3px solid var(--accent-primary);
+            padding: 0.6rem 0.8rem;
+            margin: 0.6rem 0;
+            font-size: 0.95rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .quotation .ref {
+            font-weight: bold;
+            color: var(--accent-header);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #cbd5e1;
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 0.45rem 0.6rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            font-weight: bold;
+            background-color: #f1f5f9;
+            color: var(--accent-header);
+        }
+
+        @media (max-width: 1024px) {
+            .branches-wrapper {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .branches-wrapper::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                position: static;
+                justify-content: center;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="nav-btn">Home</a>
+        </div>
+        <h1>Paper 1</h1>
+    </header>
+
+    <div class="container">
+        <div class="mindmap">
+            <div class="root-node">Theme 4: Issues of human rights</div>
+
+            <div class="branches-wrapper">
+
+                <!-- LEFT: CHRISTIANITY -->
+                <div class="branch-column">
+                    <div class="branch-group-header">Christianity</div>
+
+                    <!-- Human rights and social justice -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Human rights and social justice</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Dignity of human life: Genesis 1:26-27</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Genesis 1:26-27</span>"Then God said, 'Let us make mankind in our image, in our likeness, so that they may rule over the fish in the sea and the birds in the sky, over the livestock and all the wild animals, and over all the creatures that move along the ground.' So God created mankind in his own image, in the image of God he created them; male and female he created them."</div>
+                                    <p>Made in the image of God: every human being, of every race, gender and ability, has God-given worth. This is the foundation of Christian teaching on human rights, equality and social justice. It means dignity cannot be earned or taken away by other people, so human rights (such as life, freedom of belief and fair treatment) are seen by most Christians as the way societies respect what God has given.</p>
+                                    <p>Social justice is the goal of a fair society in which everyone has what they need and no group is held back. Because all people bear God's image, Christians argue that injustice towards any group is an offence against God.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Agape in action: promoting human rights</h4>
+                                <div class="sub-content">
+                                    <p>Agape is selfless, unconditional love, the love God shows and commands. Jesus taught that loving God and loving your neighbour are the greatest commandments, and his parable of the Good Samaritan makes anyone in need your neighbour, regardless of race or religion.</p>
+                                    <p>Agape in action means Christians promoting human rights through that love, rather than just agreeing with them in principle:</p>
+                                    <table>
+                                        <tr><th>Practice</th><th>How it promotes human rights</th></tr>
+                                        <tr><td>Food banks and soup kitchens</td><td>Churches run many of Britain's food banks, upholding the right of everyone to basic necessities.</td></tr>
+                                        <tr><td>Campaigning</td><td>Churches campaign for refugees' rights, against human trafficking and modern slavery, and for fair treatment of the poor.</td></tr>
+                                        <tr><td>Charitable work overseas</td><td>Christian charities tackle poverty, disease and injustice worldwide regardless of the religion of those helped.</td></tr>
+                                        <tr><td>Challenging discrimination</td><td>Churches speak against racism, sexism and other discrimination because all are one in Christ.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Conflict between personal conviction and the laws of a country</h4>
+                                <div class="sub-content">
+                                    <p>Personal conviction is a belief a person holds so strongly that they feel bound to act on it. Sometimes a conviction clashes with the law of the country, and the person must choose which to follow.</p>
+                                    <p>Example: some Christian registrars and bakers refused, on grounds of conscience, to take part in same-sex marriages or to make cakes celebrating them, when the law required equal service. They were willing to break the law (or lose their jobs) rather than act against their belief. Others argued the law should be obeyed because Jesus taught respect for the state ("give back to Caesar what belongs to Caesar", Mark 12:17) and because the law protected others' rights.</p>
+                                    <p>Christians divide over such cases: some say conviction must sometimes be obeyed even at cost (as with the early Christians who refused to worship the Roman emperor); others say public servants must uphold the law for everyone, and that religious freedom does not include the right to discriminate.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Censorship, freedom of religious expression and religious extremism</h4>
+                                <div class="sub-content">
+                                    <p>Censorship is the suppression of speech, writing or images considered harmful or offensive. Freedom of religious expression is the right to believe, worship and share your faith openly. Religious extremism is belief pushed so far that it rejects or harms those who disagree.</p>
+                                    <table>
+                                        <tr><th>Issue</th><th>Christian responses</th></tr>
+                                        <tr><td>Censorship</td><td>Divided. Some Christians support censoring material that promotes hatred, violence or exploitation, to protect the vulnerable. Others argue that free speech, including the freedom to criticise religion, must be protected, and that Jesus' message was spread by persuasion, not force.</td></tr>
+                                        <tr><td>Freedom of religious expression</td><td>Most Christians strongly support it: Jesus told his followers to preach the gospel openly, and Christians themselves need this freedom in many countries where they are persecuted. It includes the right to change religion or have none.</td></tr>
+                                        <tr><td>Religious extremism</td><td>Almost all Christians condemn violent extremism as a betrayal of the faith, since Jesus taught love of enemies, not violence. Some Christians are labelled extreme simply for holding conservative moral views, which they argue is a misuse of the word; mainstream churches distinguish between firm belief and extremism that rejects the dignity of others.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prejudice and discrimination -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Prejudice and discrimination</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Christian teachings on prejudice and discrimination: Galatians 3:27-29</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Galatians 3:27-29</span>"for all of you who were baptized into Christ have clothed yourselves with Christ. There is neither Jew nor Gentile, neither slave nor free, nor is there male and female, for you are all one in Christ Jesus."</div>
+                                    <p>Prejudice is judging someone before you know them, usually because of a group they belong to; discrimination is acting on that prejudice, treating people unfairly. Paul teaches that in Christ these human divisions are dissolved: race (Jew or Gentile), class (slave or free) and gender (male and female) give no one a higher standing before God. Most Christians therefore hold that prejudice and discrimination are sinful, because they deny the equal worth God gave every person.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Racial prejudice and discrimination: Martin Luther King</h4>
+                                <div class="sub-content">
+                                    <p>Racism denies that people of all races bear God's image equally. Christians have been on both sides of this history: some used the Bible to defend slavery and segregation, while others led the movement against them.</p>
+                                    <p>Martin Luther King, a Baptist minister, led the American civil rights movement. His teachings:</p>
+                                    <table>
+                                        <tr><th>Teaching</th><th>What it means</th></tr>
+                                        <tr><td>Equality from creation</td><td>All people are created equal by God, so racial segregation contradicts God's will.</td></tr>
+                                        <tr><td>The Beloved Community</td><td>Racism can only be defeated by love and reconciliation, not hatred in return: "Darkness cannot drive out darkness; only light can do that."</td></tr>
+                                        <tr><td>Non-violent resistance</td><td>Protest should be peaceful, following Jesus' teaching to turn the other cheek, winning over opponents rather than destroying them.</td></tr>
+                                        <tr><td>Judged by character</td><td>In his "I have a dream" speech he looked forward to a time when his children would be judged "not by the colour of their skin but by the content of their character".</td></tr>
+                                    </table>
+                                    <p>King's campaigns (the Montgomery bus boycott, the 1963 March on Washington, the Civil Rights Act of 1964 and Voting Rights Act of 1965) are a ready-made example of agape in action and of Christians changing the law of a country to match the Gospel.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wealth and poverty -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Wealth and poverty</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Acquisition and use of wealth: Luke 16:19-31</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Luke 16:19-31 (the rich man and Lazarus, abridged)</span>"There was a rich man who was dressed in purple and fine linen and lived in luxury every day. At his gate was laid a beggar named Lazarus, covered with sores and longing to eat what fell from the rich man's table... The time came when the beggar died and the angels carried him to Abraham's side. The rich man also died and was buried. In Hades, where he was in torment, he looked up and saw Abraham far away, with Lazarus by his side."</div>
+                                    <p>Jesus does not say the rich man broke any law: his sin was to ignore the poor man at his gate while living in luxury. The parable teaches that ignoring the poor has eternal consequences, and that the scriptures already make this duty clear ("They have Moses and the Prophets").</p>
+                                    <p>Ethical considerations for Christians about wealth: wealth itself is not evil, but it brings responsibility. Honest work and generosity are praised in the Bible; greed, exploitation and indifference to poverty are condemned. Most Christians hold that wealth should be acquired fairly, used with generosity, and shared with those in need, since Jesus warned "you cannot serve both God and money".</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Christian Aid: alleviating poverty in twenty-first century Britain and worldwide</h4>
+                                <div class="sub-content">
+                                    <p>Christian Aid is an ecumenical charity (founded by British and Irish churches) whose vision is an end to poverty. Its attitudes and actions show the principles above in practice:</p>
+                                    <table>
+                                        <tr><th>Action</th><th>What it shows</th></tr>
+                                        <tr><td>Emergency relief</td><td>Immediate help after disasters (food, water, shelter) for anyone affected, regardless of religion or race, treating need as the only qualification.</td></tr>
+                                        <tr><td>Long-term development</td><td>Helping communities become self-reliant (farming, clean water, businesses), following the saying about giving a person a fishing rod rather than a fish.</td></tr>
+                                        <tr><td>Challenging injustice</td><td>Campaigning on debt, climate change and unfair trade: poverty is treated as a matter of social justice, not charity alone.</td></tr>
+                                        <tr><td>Working locally</td><td>In Britain, church-based projects such as food banks, debt advice and night shelters relieve relative poverty on the doorstep.</td></tr>
+                                    </table>
+                                    <p>Its Christian motivation is expressed in the belief that every person is made in God's image and that faith without action for the poor is empty, but it helps purely on the basis of need, which many Christians see as agape in action.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT: ISLAM -->
+                <div class="branch-column">
+                    <div class="branch-group-header">Islam</div>
+
+                    <!-- Human rights and social justice -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Human rights and social justice</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Dignity of human life: Qur'an 5:32</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 5:32</span>"...whoever kills a soul unless for a soul or for corruption done in the land, it is as if he had slain mankind entirely. And whoever saves one, it is as if he had saved mankind entirely."</div>
+                                    <p>Every human life has Allah-given dignity: killing one innocent person is like killing all humanity, and saving one life is like saving all humanity. Most Muslims read this as the foundation of the right to life, and of Islamic teaching that human beings are honoured by Allah. From this dignity flow the rights to life, fair treatment and justice, so injustice towards any person (Muslim or not) is an offence against Allah.</p>
+                                    <p>Social justice is central to Islam: Allah commands justice, care for the needy and fair dealing, so a just society is a religious duty, not just a political preference.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Ummah in action: promoting human rights</h4>
+                                <div class="sub-content">
+                                    <p>The ummah is the worldwide community of Muslims. Muslims belong to it across every nation and race, which itself teaches equality. Ummah in action means Muslims promoting human rights and social justice through that community, for Muslims and non-Muslims alike:</p>
+                                    <table>
+                                        <tr><th>Practice</th><th>How it promotes human rights</th></tr>
+                                        <tr><td>Zakah and sadaqah</td><td>Zakah (the obligatory 2.5% of savings) is one of the Five Pillars: the right of the poor to a share of the community's wealth is built into Islam itself. Sadaqah is voluntary charity given on top of it.</td></tr>
+                                        <tr><td>Fair treatment of non-Muslims</td><td>Muslim teaching requires justice towards everyone, including those of other faiths; the Qur'an forbids letting hatred of a people lead to injustice.</td></tr>
+                                        <tr><td>Community support</td><td>Mosques in Britain run food banks, homeless projects, debt advice and support for refugees and new arrivals.</td></tr>
+                                        <tr><td>Challenging injustice</td><td>Muslim organisations campaign against racism, Islamophobia, human trafficking and global poverty.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Conflict between personal conviction and the laws of a country</h4>
+                                <div class="sub-content">
+                                    <p>Personal conviction is a belief a person holds so strongly that they feel bound to act on it. Sometimes a conviction clashes with the law of the country, and the person must choose which to follow.</p>
+                                    <p>Example: some Muslim women have refused, on grounds of conscience, to remove the hijab or niqab for official purposes (identity checks, court rules, workplace dress codes) when the law or employer required it, accepting fines or losing employment rather than acting against their belief. Another example is conscientious objection among some Muslims to laws they see as forcing them to approve of what Islam forbids.</p>
+                                    <p>Muslims divide over such cases. Many say that in Britain, where Muslims are free to worship and live their faith, the law should generally be obeyed, since Islam requires Muslims to keep the agreements of the country they live in. Others argue that where a law directly forces someone to break a clear command of Allah, conviction must come first.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Censorship, freedom of religious expression and religious extremism</h4>
+                                <div class="sub-content">
+                                    <p>Censorship is the suppression of speech, writing or images considered harmful or offensive. Freedom of religious expression is the right to believe, worship and share your faith openly. Religious extremism is belief pushed so far that it rejects or harms those who disagree. Islamophobia is prejudice and discrimination against Muslims.</p>
+                                    <table>
+                                        <tr><th>Issue</th><th>Islamic responses</th></tr>
+                                        <tr><td>Censorship</td><td>Divided. Some Muslims support restricting material that mocks religion or incites hatred, including blasphemy laws in some Muslim-majority countries. Others argue that Islam does not require the state to punish insults, and that the Qur'an teaches Muslims to respond to abuse with patience and good words, not suppression.</td></tr>
+                                        <tr><td>Freedom of religious expression</td><td>Most Muslims support it: the Qur'an states there should be "no compulsion in religion", faith cannot be forced, and Muslims themselves need this freedom where they are a minority, as in Britain.</td></tr>
+                                        <tr><td>Religious extremism</td><td>Mainstream Muslims across Sunni and Shi'a Islam condemn violent extremism as a betrayal of Islam, since the Qur'an forbids killing innocent people (Qur'an 5:32) and describes the killing of one person as killing all. Many Muslim organisations in Britain work actively to prevent radicalisation, and Muslims point out that extremists harm Muslims most of all.</td></tr>
+                                        <tr><td>Islamophobia</td><td>Muslims see Islamophobia as the racial and religious prejudice they most often face in Britain, and campaign against it with the argument that attacking people for their faith violates both human rights and British values.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prejudice and discrimination -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Prejudice and discrimination</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Islamic teachings on prejudice and discrimination: Qur'an 5:8 and 49:13</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 5:8</span>"O you who have believed, be persistently standing firm for Allah, witnesses in justice, and do not let the hatred of a people prevent you from being just. Be just; that is nearer to righteousness. And fear Allah; indeed, Allah is Acquainted with what you do."</div>
+                                    <div class="quotation"><span class="ref">Qur'an 49:13</span>"O mankind, indeed We have created you from male and female and made you peoples and tribes that you may know one another. Indeed, the most noble of you in the sight of Allah is the most righteous of you. Indeed, Allah is Knowing and Acquainted."</div>
+                                    <p>Prejudice is judging someone before you know them, usually because of a group they belong to; discrimination is acting on that prejudice, treating people unfairly. Qur'an 5:8 commands justice even towards people you dislike or distrust, so prejudice cannot be allowed to affect how anyone is treated. Qur'an 49:13 teaches that Allah deliberately made humanity into different peoples and tribes so that people would learn from one another, and that worth in Allah's eyes depends on righteousness alone, not race, tribe or nation. Most Muslims therefore hold that prejudice and discrimination are sins, because they deny the equal worth Allah gave every person.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Racial prejudice and discrimination: the Christian/Muslim Forum</h4>
+                                <div class="sub-content">
+                                    <p>Racism denies that people of all races have the dignity Allah gave them. Muslims point to the example of the Prophet Muhammad's final sermon, which taught that no Arab is superior to a non-Arab, nor a white person to a black person, except by piety, as a direct rejection of racial prejudice.</p>
+                                    <p>The Christian/Muslim Forum is an example of Christians and Muslims in Britain working together against racism and religious hatred:</p>
+                                    <table>
+                                        <tr><th>Action</th><th>What it shows</th></tr>
+                                        <tr><td>Joint statements against racism</td><td>Christians and Muslims stand together to condemn racist attacks, showing that their faiths agree on the equal worth of all people.</td></tr>
+                                        <tr><td>Responding together to hate crime</td><td>When mosques or churches are attacked, the other community often attends in solidarity, refusing to let prejudice divide them.</td></tr>
+                                        <tr><td>Joint social projects</td><td>Shared food banks, refugee support and inter-faith youth work put equality and cooperation into practice.</td></tr>
+                                        <tr><td>Challenging Islamophobia and anti-Christian hatred together</td><td>Both communities oppose prejudice against each other, modelling the justice their scriptures command.</td></tr>
+                                    </table>
+                                    <p>The forum is a ready-made example of two faiths acting together so that prejudice and discrimination are answered by cooperation rather than conflict.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wealth and poverty -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Wealth and poverty</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Acquisition and use of wealth: Qur'an 2:177</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 2:177 (abridged)</span>"Righteousness is not that you turn your faces toward the east or the west, but righteousness is in one who believes in Allah, the Last Day, the angels, the Book, and the prophets and gives wealth, in spite of love for it, to relatives, orphans, the needy, the traveller, those who ask for help, and for freeing slaves; and who establishes prayer and gives zakah... Those are the ones who have been true, and it is those who are the righteous."</div>
+                                    <p>True righteousness is not shown by religious appearance (facing the right direction in prayer) but by belief combined with giving wealth away, even though people love it, to those who need it. Wealth must be earned honestly (haram earnings such as gambling, interest and fraud are forbidden) and spent in ways that please Allah: supporting family, orphans, the needy, travellers and good causes.</p>
+                                    <p>Zakah (2.5% of qualifying savings each year) makes redistribution a duty rather than a choice, so in Islamic teaching the poor have a right to a share of the community's wealth, and the rich have a duty to pay it.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Islamic Relief: alleviating poverty in twenty-first century Britain and worldwide</h4>
+                                <div class="sub-content">
+                                    <p>Islamic Relief is a major international Muslim charity, founded in Britain in 1984, whose aim is to alleviate poverty and suffering. Its attitudes and actions show the principles above in practice:</p>
+                                    <table>
+                                        <tr><th>Action</th><th>What it shows</th></tr>
+                                        <tr><td>Emergency relief</td><td>Immediate help after disasters and in war zones (food, water, shelter, medical care) for anyone affected, regardless of religion or race, treating need as the only qualification.</td></tr>
+                                        <tr><td>Long-term development</td><td>Helping communities become self-reliant through water projects, farming, education and small businesses, so that help lasts beyond the crisis.</td></tr>
+                                        <tr><td>Zakah-funded work</td><td>Much of its income is zakah and sadaqah from Muslims worldwide: the duty of giving becomes organised poverty relief, which many Muslims see as the ummah in action.</td></tr>
+                                        <tr><td>Work in Britain</td><td>Domestic projects such as food banks and support for vulnerable families relieve relative poverty on the doorstep, showing that the ummah includes Britain's poor of all faiths.</td></tr>
+                                    </table>
+                                    <p>Its motivation is Qur'anic: giving wealth to the needy is part of righteousness (Qur'an 2:177), but it distributes help on the basis of need alone.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNode(element) {
+            element.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
