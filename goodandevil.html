@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper 1: Theme 3 — Issues of Good and Evil</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --card-border: #94a3b8;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-primary: #0369a1;
+            --accent-header: #075985;
+            --hover-bg: #f1f5f9;
+            --line-color: #0369a1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Century Gothic", "CenturyGothic", "AppleGothic", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: auto;
+            font-size: 1.02rem;
+            line-height: 1.5;
+        }
+
+        header {
+            padding: 1.5rem 1rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid #cbd5e1;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .nav-container {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background-color: #ffffff;
+            color: var(--accent-header);
+            border: 1px solid var(--card-border);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--hover-bg);
+            border-color: var(--accent-primary);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--accent-header);
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+        }
+
+        .mindmap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .root-node {
+            background-color: var(--accent-header);
+            color: #ffffff;
+            padding: 1.2rem 3rem;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.4rem;
+            box-shadow: 0 10px 15px -3px rgba(3, 105, 161, 0.2);
+            z-index: 2;
+            text-align: center;
+            margin-bottom: 4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .branches-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            width: 100%;
+            max-width: 1600px;
+            position: relative;
+        }
+
+        .branches-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            width: 3px;
+            height: 40px;
+            background-color: var(--line-color);
+            transform: translateX(-50%);
+        }
+
+        .branch-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        .branch-group-header {
+            background-color: #e0f2fe;
+            border: 2px solid var(--accent-primary);
+            color: var(--accent-header);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .node-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-left: 5px solid var(--accent-primary);
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .node-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -3px rgba(3, 105, 161, 0.15);
+        }
+
+        .node-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .node-header h3 {
+            font-size: 1.15rem;
+            color: var(--accent-header);
+            font-weight: 700;
+        }
+
+        .sub-nodes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .sub-node {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-left: 3px solid var(--accent-primary);
+            border-radius: 0 6px 6px 0;
+            padding: 0.75rem;
+            font-size: 0.98rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .sub-node:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .sub-node h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .sub-node h4::after {
+            content: '+';
+            color: var(--accent-primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .sub-node.active h4::after {
+            content: '-';
+        }
+
+        .sub-content {
+            display: none;
+            margin-top: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.5;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 0.5rem;
+        }
+
+        .sub-node.active .sub-content {
+            display: block;
+        }
+
+        .sub-content p {
+            margin-bottom: 0.5rem;
+        }
+
+        .quotation {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-left: 3px solid var(--accent-primary);
+            padding: 0.6rem 0.8rem;
+            margin: 0.6rem 0;
+            font-size: 0.95rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .quotation .ref {
+            font-weight: bold;
+            color: var(--accent-header);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #cbd5e1;
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 0.45rem 0.6rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            font-weight: bold;
+            background-color: #f1f5f9;
+            color: var(--accent-header);
+        }
+
+        @media (max-width: 1024px) {
+            .branches-wrapper {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .branches-wrapper::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                position: static;
+                justify-content: center;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="nav-btn">Home</a>
+        </div>
+        <h1>Paper 1</h1>
+    </header>
+
+    <div class="container">
+        <div class="mindmap">
+            <div class="root-node">Theme 3: Issues of good and evil</div>
+
+            <div class="branches-wrapper">
+
+                <!-- LEFT: CHRISTIANITY -->
+                <div class="branch-column">
+                    <div class="branch-group-header">Christianity</div>
+
+                    <!-- Crime and punishment -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Crime and punishment</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>What makes an act wrong?</h4>
+                                <div class="sub-content">
+                                    <p>For Christians, an act is wrong when it breaks God's law: either the commandments given in the Bible, or the moral law that many Christians believe God has written into every human heart. Sin is any thought, word or deed that goes against the will of God. So the test of whether an act is wrong is not whether it feels acceptable or is legal, but whether it goes against God's will.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Relative and absolute morality, conscience, virtues, sin</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Concept</th><th>What it means</th><th>How Christians use it</th></tr>
+                                        <tr><td>Absolute morality</td><td>Some actions are always right or always wrong, in every situation, with no exceptions.</td><td>Most conservative Christians take this view of things like murder, forbidden by the Ten Commandments without exception.</td></tr>
+                                        <tr><td>Relative morality</td><td>What is right depends on the situation and its outcome; the same act may be wrong in one case and right in another.</td><td>Many liberal Christians weigh circumstances and consequences, for example in questions of abortion or self-defence.</td></tr>
+                                        <tr><td>Conscience</td><td>The inner sense of right and wrong that guides a person's decisions.</td><td>Many Christians see the conscience as the voice of God within them, to be obeyed even when it is costly; others say it can be mistaken and needs to be trained by teaching.</td></tr>
+                                        <tr><td>Virtues</td><td>Good character traits, such as kindness, honesty, patience and courage, that a person builds up over time.</td><td>Christians try to grow virtues so that doing good becomes natural, following the example of Jesus.</td></tr>
+                                        <tr><td>Sin</td><td>An act, thought or word that goes against the will of God.</td><td>All humans sin, in Christian teaching, and sin separates people from God, which is why forgiveness and salvation matter.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Causes of crime and the aims of punishment</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Cause of crime</th><th>Explanation</th></tr>
+                                        <tr><td>Poverty</td><td>Some people steal or turn to crime because they cannot meet basic needs.</td></tr>
+                                        <tr><td>Upbringing</td><td>Children who grow up around crime, neglect or abuse are more likely to offend.</td></tr>
+                                        <tr><td>Addiction</td><td>Alcohol and drug dependency drive many offences, from theft to violence.</td></tr>
+                                        <tr><td>Greed</td><td>Some crimes are committed not from need but from wanting more than one has.</td></tr>
+                                        <tr><td>Mental illness</td><td>Some offenders act because of illness or distress rather than free choice.</td></tr>
+                                        <tr><td>Free will</td><td>Christians and Muslims both stress that people choose to do wrong, so they are responsible for it.</td></tr>
+                                    </table>
+                                    <table>
+                                        <tr><th>Aim of punishment</th><th>What it means</th></tr>
+                                        <tr><td>Justice</td><td>Making sure the wrong is answered fairly: the criminal is dealt with as they deserve, and the victim's rights are upheld.</td></tr>
+                                        <tr><td>Retribution</td><td>Paying back: the punishment should fit the crime.</td></tr>
+                                        <tr><td>Deterrence</td><td>Putting people off crime: if the punishment is serious enough, others will not offend.</td></tr>
+                                        <tr><td>Reformation</td><td>Changing the offender so they will not reoffend: education, therapy and rehabilitation. Most Christians today see this as the most important aim.</td></tr>
+                                    </table>
+                                    <p>Most Christians support all four aims but hold that punishment should always be proportionate and that criminals are still human beings made in God's image, so they deserve to be treated with dignity and given the chance to reform.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Treatment of criminals, prison reformers and prison chaplains</h4>
+                                <div class="sub-content">
+                                    <p>Christians have led prison reform. Quakers and other Christians campaigned in the eighteenth and nineteenth centuries against conditions in which prisoners were chained in filth with no education or purpose, arguing that prisons should reform rather than merely punish.</p>
+                                    <p>Prison reformers such as Elizabeth Fry (a Quaker, who campaigned for better conditions for women prisoners in Newgate prison, including education, work and dignified treatment) showed reformation in action.</p>
+                                    <p>Prison chaplains today work inside prisons, offering worship, pastoral care, counselling and practical support to prisoners of all faiths and none. They reflect the Christian belief that no one is beyond God's forgiveness and that every person retains their dignity.</p>
+                                    <p>Most Christians support fair treatment of criminals: decent conditions, protection from abuse, education and rehabilitation, because reformation is a central aim of punishment.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Varied Christian responses to the death penalty</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Exodus 20:13</span>"You shall not murder."</div>
+                                    <div class="quotation"><span class="ref">Matthew 5:38-39</span>"You have heard that it was said, 'Eye for eye, and tooth for tooth.' But I tell you, do not resist an evil person. If anyone slaps you on the right cheek, turn to them the other cheek also."</div>
+                                    <div class="quotation"><span class="ref">Matthew 5:43-47</span>"You have heard that it was said, 'Love your neighbour and hate your enemy.' But I tell you, love your enemies and pray for those who persecute you, that you may be children of your Father in heaven. He causes his sun to rise on the evil and the good, and sends rain on the righteous and the unrighteous. If you love those who love you, what reward will you get? Are not even the tax collectors doing that? And if you greet only your own people, what are you doing more than others? Do not even pagans do that?"</div>
+                                    <table>
+                                        <tr><th>View</th><th>Response</th></tr>
+                                        <tr><td>Conservative Christians who support it</td><td>In the Old Testament, God commands capital punishment for some crimes, and justice requires the ultimate punishment for the ultimate crime. Some see Romans 13 (the governing authorities "bear the sword" as God's servants) as showing the state may lawfully execute. Exodus 20:13 forbids murder, not lawful execution by the state.</td></tr>
+                                        <tr><td>Liberal Christians who oppose it</td><td>Jesus overturned "eye for eye" (Matthew 5:38-39) and commanded love for enemies (Matthew 5:43-47). Only God gives and takes life, so the state has no right to kill. Reformation, not death, is the aim of punishment, and mistakes by courts can kill the innocent. Most churches in Britain, including the Catholic Church and the Church of England, now oppose the death penalty, and no EU or UK jurisdiction uses it.</td></tr>
+                                    </table>
+                                    <p>Both sides use Christian teaching: conservatives lean on Old Testament justice, liberals on Jesus' own words in the Sermon on the Mount.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Forgiveness -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Forgiveness</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Christian teachings about forgiveness</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Matthew 18:21-22</span>"Then Peter came to Jesus and asked, 'Lord, how many times shall I forgive my brother or sister who sins against me? Up to seven times?' Jesus answered, 'I tell you, not seven times, but seventy-seven times.'"</div>
+                                    <div class="quotation"><span class="ref">Matthew 6:14-15</span>"For if you forgive other people when they sin against you, your heavenly Father will also forgive you. But if you do not forgive others their sins, your Father will not forgive your sins."</div>
+                                    <p>Peter thought forgiving seven times was generous; Jesus multiplies it to seventy-seven (or seventy times seven, according to some translations), meaning forgiveness should be unlimited, not a number to be counted.</p>
+                                    <p>Matthew 6:14-15 makes forgiveness of others the condition for receiving God's forgiveness: Christians pray in the Lord's Prayer "forgive us our sins, as we forgive those who sin against us". Refusing to forgive cuts a person off from God's forgiveness.</p>
+                                    <p>Most Christians therefore see forgiveness as a duty for everyone, including the victims of serious crime; forgiveness does not mean forgetting or excusing the wrong, and it does not cancel the need for justice, but it releases the victim from bitterness.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Examples of forgiveness arising from personal beliefs</h4>
+                                <div class="sub-content">
+                                    <p>Christians who have lost family members to murder have publicly forgiven the killers, saying they did so because Jesus commanded it and because God forgave them first. These cases show forgiveness coming from belief, not from feeling ready.</p>
+                                    <p>In church practice, confession and absolution (for Catholics) or prayers of repentance (for Protestants) give believers a regular way of receiving and giving forgiveness.</p>
+                                    <p>Prison chaplaincy is itself forgiveness in action: chaplains treat offenders as people capable of change, however serious their crimes.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Good, evil and suffering -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Good, evil and suffering</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>The origin of evil: Original Sin (free will) and soul-making (Irenaeus and John Hick)</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>View</th><th>Explanation</th></tr>
+                                        <tr><td>Original Sin (Augustine, and the free will defence)</td><td>God created a perfect world, but Adam and Eve disobeyed (the Fall), and that first sin damaged human nature, so all humans are born with a tendency to sin. Evil exists because God gave humans free will, and real freedom means the ability to choose wrongly; a world where people could only do good would be a world of puppets. God is right to allow evil, because free will is a greater good.</td></tr>
+                                        <tr><td>Soul-making (Irenaeus, developed by John Hick)</td><td>Humans are not born sinful but are created imperfect, at an "epistemic distance" from God, and must grow towards goodness through free choices. Evil and suffering are the environment in which genuine virtues (courage, compassion, forgiveness) can develop: a world with no suffering would produce no moral growth. Hick called this a "vale of soul-making". God allows evil because the development of soul and character is worth it.</td></tr>
+                                    </table>
+                                    <p>Difference in a line: Augustine sees evil as a fall from a perfect state that God must repair; Irenaeus and Hick see evil as a stage in a journey God designed humans to complete.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Philosophical challenges: God, free will and evil</h4>
+                                <div class="sub-content">
+                                    <p>The problem of evil: if God is omnipotent (all-powerful), omniscient (all-knowing) and omnibenevolent (all-loving), why does he allow evil and suffering? Either he cannot stop it, does not know about it, or does not want to. This is the strongest challenge to belief in God.</p>
+                                    <p>The free will defence answers that moral evil (evil done by humans) is the price of freedom; but natural evil (disease, earthquakes, famine) is not caused by human choice, so critics ask why God allows it.</p>
+                                    <p>Soul-making answers that natural evil is needed for moral growth, but critics reply that the amount and cruelty of suffering, especially in children and animals, is far more than growth requires.</p>
+                                    <p>Free will itself raises a further challenge: if God knows in advance everything a person will choose, are their choices really free? Most Christians reply that God's knowledge does not cause the choice; God simply knows it in advance.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT: ISLAM -->
+                <div class="branch-column">
+                    <div class="branch-group-header">Islam</div>
+
+                    <!-- Crime and punishment -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Crime and punishment</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>What makes an act wrong?</h4>
+                                <div class="sub-content">
+                                    <p>For Muslims, an act is wrong when it goes against the will of Allah as shown in the Qur'an and the Sunnah (the example of the Prophet Muhammad). Shariah (Islamic law) sets out what is halal (permitted) and haram (forbidden), so wrongdoing is not simply a matter of opinion: Allah has defined right and wrong.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Relative and absolute morality, conscience, free will, doing the will of Allah</h4>
+                                <div class="sub-content">
+                                    <table>
+                                        <tr><th>Concept</th><th>How Muslims understand it</th></tr>
+                                        <tr><td>Absolute morality</td><td>Most Muslims hold that what Allah has forbidden (for example, murder, theft, adultery) is always wrong, in every situation.</td></tr>
+                                        <tr><td>Relative morality</td><td>Some scholars allow flexibility where the circumstances make a general rule impossible to follow (for example, eating pork to avoid starving), but only within strict limits set by the Qur'an.</td></tr>
+                                        <tr><td>Conscience</td><td>A Muslim's conscience should be trained by the Qur'an and Sunnah; the inner sense of sin is understood to work alongside revelation, not against it.</td></tr>
+                                        <tr><td>Free will</td><td>Allah gave humans free will, so people choose their actions and are accountable for them on the Day of Judgement.</td></tr>
+                                        <tr><td>Doing the will of Allah</td><td>The purpose of life is to obey Allah's will (islam means submission); doing good and avoiding sin is how a Muslim submits.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Causes of crime and the aims of punishment</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 16:90</span>"Indeed, Allah orders justice and good conduct and giving to relatives and forbids immorality and bad conduct and oppression. He admonishes you that perhaps you will be reminded."</div>
+                                    <p>Allah commands justice directly, so crime (an injustice) and oppression are against the will of Allah. Muslims identify similar causes of crime to Christians (poverty, bad upbringing, addiction, greed) and stress that because humans have free will, offenders are responsible for their choices, though society should also tackle the causes.</p>
+                                    <table>
+                                        <tr><th>Aim of punishment</th><th>What it means</th></tr>
+                                        <tr><td>Justice</td><td>Restoring fairness: the victim's rights are upheld and the offender receives what the law set. Shariah sets fixed punishments for some crimes, which Muslims who follow them say is the purest form of justice.</td></tr>
+                                        <tr><td>Retribution</td><td>The punishment fits the crime.</td></tr>
+                                        <tr><td>Deterrence</td><td>Public and serious punishment discourages others from offending.</td></tr>
+                                        <tr><td>Reformation</td><td>Forgiveness and rehabilitation where possible: the Qur'an repeatedly commands forgiveness, and prison should give offenders a chance to repent and change.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Treatment of criminals, prison reformers and prison chaplains</h4>
+                                <div class="sub-content">
+                                    <p>Muslim prisoners in Britain are supported by prison imams and chaplains who lead prayers, teach, counsel and help prisoners prepare for release. Chaplaincy reflects the Islamic duty to care for those in need, including offenders.</p>
+                                    <p>Many Muslims support rehabilitation: the offender who repents (makes tawbah, turning back to Allah) is to be given the chance of a new life.</p>
+                                    <p>Muslims are often concerned that prisoners should be able to practise their faith in prison (halal food, worship, washing facilities), and that punishment should be humane and proportionate.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Varied Islamic responses to the death penalty</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 2:178 (summary of teaching)</span>The law of equality (qisas) prescribes a life for a life in cases of murder, unless the family of the victim pardons the killer, and "pardoning is closer to righteousness".</div>
+                                    <table>
+                                        <tr><th>View</th><th>Response</th></tr>
+                                        <tr><td>Muslims who support it (traditional readings)</td><td>Shariah prescribes the death penalty for the most serious crimes (murder under qisas, and in some schools of law, other grave offences). Carrying it out is justice for the victim and a deterrence, and it is ordered by Allah, so a Muslim society may lawfully apply it.</td></tr>
+                                        <tr><td>Muslims who oppose or limit it</td><td>The Qur'an emphasises that pardoning is "closer to righteousness", so forgiveness is preferred to execution. Strict requirements of evidence (including witnesses) make the death penalty very difficult to apply fairly, and some argue that states which use it unjustly violate Islamic justice itself. Many Muslims in Britain, living under UK law where there is no death penalty, accept abolition as compatible with Islam.</td></tr>
+                                    </table>
+                                    <p>Both sides read the same sources: supporters stress justice and divine command, opponents stress forgiveness and the risk of injustice.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Forgiveness -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Forgiveness</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Islamic teachings about forgiveness</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 42:30</span>"And whatever strikes you of disaster, it is for what your hands have earned; but He pardons much."</div>
+                                    <div class="quotation"><span class="ref">Qur'an 64:14</span>"O you who have believed, indeed, among your wives and your children are enemies to you, so beware of them. But if you pardon and overlook and forgive, then indeed, Allah is Forgiving and Merciful."</div>
+                                    <p>Qur'an 42:30 teaches that much suffering is a consequence of human actions, but Allah pardons far more than we deserve: forgiveness is Allah's normal response to repentance.</p>
+                                    <p>Qur'an 64:14 commands believers to pardon and forgive even within their own families, when those closest to them disappoint or oppose them. Since Allah is forgiving and merciful, Muslims should mirror his mercy.</p>
+                                    <p>Forgiveness is therefore a duty of Muslims towards others, and forgiveness on the Day of Judgement depends on forgiveness given here. On the Day of Judgement Muslims believe Allah will forgive whom he wills, and that those who forgave others will be forgiven.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Examples of forgiveness arising from personal beliefs</h4>
+                                <div class="sub-content">
+                                    <p>Muslims who have lost relatives in attacks have publicly forgiven the perpetrators, saying they did so because Allah commands forgiveness and because they trust him to judge fairly.</p>
+                                    <p>In Islamic practice, tawbah (repentance) allows a Muslim who has wronged someone to seek forgiveness from Allah and from the person they wronged; where restitution is possible, it should be made.</p>
+                                    <p>Charitable work with ex-offenders in Muslim communities, helping them resettle and rebuild, reflects the belief that forgiveness must be shown in action.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Good, evil and suffering -->
+                    <div class="node-card">
+                        <div class="node-header">
+                            <h3>Good, evil and suffering</h3>
+                        </div>
+                        <div class="sub-nodes-container">
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>The origin of evil: the Devil tests humans</h4>
+                                <div class="sub-content">
+                                    <div class="quotation"><span class="ref">Qur'an 2:34</span>"And mention when We said to the angels, 'Prostrate before Adam'; so they prostrated, except for Iblees. He refused and was arrogant and became of the disbelievers."</div>
+                                    <div class="quotation"><span class="ref">Qur'an 2:155</span>"And We will surely test you with something of fear and hunger and a loss of wealth and lives and fruits, but give good tidings to the patient."</div>
+                                    <p>Iblees (the Devil, also called Shaytan) was created from fire, and when Allah commanded the angels to bow to Adam, he refused out of pride and became a disbeliever. He is therefore the first being to do evil, and evil did not come from Allah.</p>
+                                    <p>The Devil now exists to test humans: he whispers temptation, and resisting him is part of each person's test. Evil in the world comes from human free will combined with the Devil's temptation, not from Allah, who is perfectly good.</p>
+                                    <p>Qur'an 2:155 shows that suffering is a test from Allah: fear, hunger and loss come to everyone, and those who stay patient through them earn reward. Suffering is therefore not meaningless but part of the purpose of this life, which is a test before the Day of Judgement.</p>
+                                </div>
+                            </div>
+                            <div class="sub-node" onclick="toggleNode(this)">
+                                <h4>Pre-destination (al Qadr) and free will</h4>
+                                <div class="sub-content">
+                                    <p>Al Qadr is the belief that Allah has already written everything that will happen: he is all-knowing and nothing happens outside his will.</p>
+                                    <p>The apparent tension: if Allah has pre-destined everything, how can humans have free will, and how can they be judged for choices they were destined to make?</p>
+                                    <p>The mainstream Sunni position: Allah's knowledge of events does not force them to happen; humans genuinely choose, and are accountable, even though Allah already knew what they would choose. Muslims are therefore commanded to do good, seek forgiveness and strive, as if the outcome depended on them.</p>
+                                    <p>Shi'a Muslims also believe in al Qadr but stress that Allah's justice (adl) means he does not pre-destine people to sin: humans bear real responsibility for their own actions.</p>
+                                    <p>This diversity over free will and pre-destination is a ready-made example of difference within Islam for the exam.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNode(element) {
+            element.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
